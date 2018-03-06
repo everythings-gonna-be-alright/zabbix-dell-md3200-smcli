@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <zabbix_export>
     <version>3.4</version>
-    <date>2018-03-06T13:35:10Z</date>
+    <date>2018-03-06T14:29:28Z</date>
     <groups>
         <group>
             <name>Templates - ALL</name>
@@ -400,7 +400,7 @@
                     </item_prototypes>
                     <trigger_prototypes>
                         <trigger_prototype>
-                            <expression>{Template Hardware Dell md3200:md3200.controller[{$IP1},{$IP2},&quot;{#CONTSHORTNAME}&quot;,&quot;Status&quot;].str(Online,500s)}=0</expression>
+                            <expression>{Template Hardware Dell md3200:md3200.controller[{$IP1},{$IP2},&quot;{#CONTSHORTNAME}&quot;,&quot;Status&quot;].str(Online,30s)}=0</expression>
                             <recovery_mode>0</recovery_mode>
                             <recovery_expression/>
                             <name>{#CONTNAME} ( Controller status is not optimal )</name>
@@ -412,11 +412,22 @@
                             <description/>
                             <type>0</type>
                             <manual_close>0</manual_close>
-                            <dependencies/>
+                            <dependencies>
+                                <dependency>
+                                    <name>First Controller not response ( ICMP )</name>
+                                    <expression>{Template Hardware Dell md3200:icmpping[{$IP1}].last()}=0</expression>
+                                    <recovery_expression/>
+                                </dependency>
+                                <dependency>
+                                    <name>Second Controller not response ( ICMP )</name>
+                                    <expression>{Template Hardware Dell md3200:icmpping[{$IP2}].last()}=0</expression>
+                                    <recovery_expression/>
+                                </dependency>
+                            </dependencies>
                             <tags/>
                         </trigger_prototype>
                         <trigger_prototype>
-                            <expression>{Template Hardware Dell md3200:md3200.controller[{$IP1},{$IP2},&quot;{#CONTSHORTNAME}&quot;,&quot;Interface_Status&quot;].str(Optimal,500s)}=0</expression>
+                            <expression>{Template Hardware Dell md3200:md3200.controller[{$IP1},{$IP2},&quot;{#CONTSHORTNAME}&quot;,&quot;Interface_Status&quot;].str(Optimal,30s)}=0</expression>
                             <recovery_mode>0</recovery_mode>
                             <recovery_expression/>
                             <name>{#CONTNAME} ( Interface status is not optimal )</name>
@@ -428,7 +439,18 @@
                             <description/>
                             <type>0</type>
                             <manual_close>0</manual_close>
-                            <dependencies/>
+                            <dependencies>
+                                <dependency>
+                                    <name>First Controller not response ( ICMP )</name>
+                                    <expression>{Template Hardware Dell md3200:icmpping[{$IP1}].last()}=0</expression>
+                                    <recovery_expression/>
+                                </dependency>
+                                <dependency>
+                                    <name>Second Controller not response ( ICMP )</name>
+                                    <expression>{Template Hardware Dell md3200:icmpping[{$IP2}].last()}=0</expression>
+                                    <recovery_expression/>
+                                </dependency>
+                            </dependencies>
                             <tags/>
                         </trigger_prototype>
                     </trigger_prototypes>
@@ -849,7 +871,7 @@
                     </item_prototypes>
                     <trigger_prototypes>
                         <trigger_prototype>
-                            <expression>{Template Hardware Dell md3200:md3200.disk[{$IP1},{$IP2},&quot;{#DISKSHORTNAME}&quot;,&quot;Status&quot;].str(Optimal,500s)}=0</expression>
+                            <expression>{Template Hardware Dell md3200:md3200.disk[{$IP1},{$IP2},&quot;{#DISKSHORTNAME}&quot;,&quot;Status&quot;].str(Optimal,30s)}=0</expression>
                             <recovery_mode>0</recovery_mode>
                             <recovery_expression/>
                             <name>{#DISKNAME} ( Disk status is not optimal )</name>
@@ -861,7 +883,18 @@
                             <description/>
                             <type>0</type>
                             <manual_close>0</manual_close>
-                            <dependencies/>
+                            <dependencies>
+                                <dependency>
+                                    <name>First Controller not response ( ICMP )</name>
+                                    <expression>{Template Hardware Dell md3200:icmpping[{$IP1}].last()}=0</expression>
+                                    <recovery_expression/>
+                                </dependency>
+                                <dependency>
+                                    <name>Second Controller not response ( ICMP )</name>
+                                    <expression>{Template Hardware Dell md3200:icmpping[{$IP2}].last()}=0</expression>
+                                    <recovery_expression/>
+                                </dependency>
+                            </dependencies>
                             <tags/>
                         </trigger_prototype>
                     </trigger_prototypes>
@@ -954,11 +987,11 @@
             <macros>
                 <macro>
                     <macro>{$IP1}</macro>
-                    <value>FIRST_CONTROLLER_IP</value>
+                    <value>SECOND_CONTROLLER_IP</value>
                 </macro>
                 <macro>
                     <macro>{$IP2}</macro>
-                    <value>SECOND_CONTROLLER_IP</value>
+                    <value>FIRST_CONTROLLER_IP</value>
                 </macro>
             </macros>
             <templates/>
